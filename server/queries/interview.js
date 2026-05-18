@@ -141,18 +141,6 @@ async function resumeInterview(id) {
     );
 }
 
-async function getAllInterviewQuestions(id) {
-    const query = `
-        SELECT *
-        FROM interview_questions
-        WHERE interview_id = $1
-    `;
-
-    const result = await pool.query(query, [id]);
-
-    return result.rows;
-}
-
 module.exports = {
     createInterview,
     createInterviewQuestions,
@@ -162,5 +150,4 @@ module.exports = {
     getAllInterviews,
     abandonInterview,
     resumeInterview,
-    getAllInterviewQuestions,
 }

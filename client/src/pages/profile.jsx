@@ -105,36 +105,65 @@ function Profile() {
                     </div>
                 ) : (
                     <div
-                        className="border border-borderDark rounded-xl px-5 py-4 flex items-center gap-4 transition-all duration-150 hover:border-white/15"
+                        className="border border-borderDark rounded-xl p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-150"
                         style={{ background: "rgba(255,255,255,0.02)" }}
                     >
-                        <div className="shrink-0 w-14 text-center">
-                            <p className={`font-display text-[28px] font-medium leading-none ${lastInterview.score != null ? scoreColor(lastInterview.score) : "text-white/40"}`}>
-                                {lastInterview.score ?? "—"}
-                            </p>
+                        <div className="flex items-start gap-4 w-full min-w-0">
+                            <div className="shrink-0 w-14 text-center">
+                                <p
+                                    className={`font-display text-[26px] sm:text-[28px] font-medium leading-none ${
+                                        lastInterview.score != null
+                                            ? scoreColor(lastInterview.score)
+                                            : "text-white/40"
+                                    }`}
+                                >
+                                    {lastInterview.score ?? "—"}
+                                </p>
 
-                            <p className="text-[10px] text-white/50 mt-0.5">/100</p>
-                        </div>
-
-                        <div className="w-px h-10 bg-white/6 shrink-0" />
-
-                        <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                                <p className="text-[14px] font-medium text-white truncate">{lastInterview.role}</p>
-
-                                <span className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-md border ${difficultyColor[lastInterview.difficulty]}`}>
-                                    {lastInterview.difficulty}
-                                </span>
+                                <p className="text-[10px] text-white/50 mt-0.5">
+                                    /100
+                                </p>
                             </div>
 
-                            <p className="text-[12px] text-white/40">
-                                {formatDate(lastInterview.started_at)} · {formatDuration(lastInterview.started_at, lastInterview.completed_at)}
-                            </p>
+                            <div className="w-px h-10 bg-white/6 shrink-0 hidden sm:block" />
+
+                            <div className="flex-1 min-w-0">
+                                <div className="flex flex-wrap items-center gap-2 mb-1">
+                                    <p className="text-[14px] font-medium text-white break-words">
+                                        {lastInterview.role}
+                                    </p>
+
+                                    <span
+                                        className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-md border ${
+                                            difficultyColor[
+                                                lastInterview.difficulty
+                                            ]
+                                        }`}
+                                    >
+                                        {lastInterview.difficulty}
+                                    </span>
+                                </div>
+
+                                <p className="text-[12px] text-white/40">
+                                    {formatDate(lastInterview.started_at)} ·{" "}
+                                    {formatDuration(
+                                        lastInterview.started_at,
+                                        lastInterview.completed_at
+                                    )}
+                                </p>
+                            </div>
                         </div>
 
-                        <button className="cursor-pointer shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
-                            Review →
-                        </button>
+                        {(lastInterview.status === "abandoned" ||
+                            lastInterview.status === "active") ? (
+                            <button className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                                Resume →
+                            </button>
+                        ) : (
+                            <button className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                                Review →
+                            </button>
+                        )}
                     </div>
                 )}
             </div>

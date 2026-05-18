@@ -7,8 +7,8 @@ const {
     getAllInterviews,
     abandonInterview,
     resumeInterview,
-    getAllInterviewQuestions
 } = require("../queries/interview");
+const { getAllInterviewQuestionsByInterviewId } = require("../queries/question");
 
 const {
     generateEvaluationForAnswer,
@@ -25,7 +25,7 @@ async function handleGetAllInterviews(req, res) {
             });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "All Interviews",
             interviews: interviews,
         });
@@ -49,7 +49,7 @@ async function handleStartInterview(req, res) {
 
         const savedQuestions = await createInterviewQuestions(interview.id, questionsList.questions);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Interview initiated",
             interview,
             questions: savedQuestions,
@@ -78,7 +78,7 @@ async function handleSubmitAnswer(req, res) {
 
         const interview_question = await submitResponseToInterviewQuestion(questionId, answer, feedback, Number(score));
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Answer submitted",
             interview_question: interview_question,
         });
@@ -112,7 +112,7 @@ async function handleSubmitInterview(req, res) {
 
         const interview = await submitFinalScore(score, interviewId);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Interview successfully submitted",
             interview: interview,
         });
@@ -138,7 +138,7 @@ async function handleAbandonInterview(req, res) {
 
         const interview = await abandonInterview(interviewId);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Interview abandoned",
             interview: interview,
         });
@@ -165,9 +165,9 @@ async function handleResumeInterview(req, res) {
 
         const interview = await resumeInterview(interviewId);
 
-        const questions = await getAllInterviewQuestions(interviewId);
+        const questions = await getAllInterviewQuestionsByInterviewId(interviewId);
 
-        res.status(200).json({
+        return res.status(200).json({
             message: "Interview restarted",
             interview,
             questions: questions || [],

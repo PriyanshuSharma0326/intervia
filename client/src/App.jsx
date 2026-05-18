@@ -11,18 +11,22 @@ import QuestionBanks from './pages/question-banks';
 import Interview from './pages/interview';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchInterviews } from './features/appSlice';
+import { fetchInterviews, fetchQuestions } from './features/appSlice';
 import Profile from './pages/profile';
+import ScrollToTop from './components/scroll-to-top';
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchInterviews());
+        dispatch(fetchQuestions());
     }, []);
 
     return (
         <Router>
+            <ScrollToTop />
+
             <Routes>
                 <Route path='/auth'>
                     <Route index element={<Navigate to="login" />} />

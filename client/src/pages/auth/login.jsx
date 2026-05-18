@@ -7,7 +7,7 @@ import { useAuth } from "../../context/auth-context";
 import LoadingModal from "../../components/loading-modal";
 import AppLogo from '../../assets/AppLogo.svg';
 import { useDispatch } from "react-redux";
-import { fetchInterviews } from "../../features/appSlice";
+import { fetchInterviews, fetchQuestions } from "../../features/appSlice";
 
 function Login() {
     const dispatch = useDispatch();
@@ -67,6 +67,7 @@ function Login() {
                 setIsAuthenticated(true);
                 setForm(defaultFormInputs);
                 dispatch(fetchInterviews());
+                dispatch(fetchQuestions());
                 navigate('/');
             }
         }

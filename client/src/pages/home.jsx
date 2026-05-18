@@ -115,7 +115,7 @@ function Home() {
                                         ${
                                             field === f
                                                 ? "bg-brandPrimary/15 border-brandAccent/40 text-brandAccent"
-                                                : "bg-transparent border-borderDark text-white/50 hover:text-white hover:border-white/20"
+                                                : "bg-transparent border-borderDark text-white/70 hover:text-white hover:border-white/40"
                                         }`}
                                 >
                                     {f}
@@ -154,7 +154,7 @@ function Home() {
                             Difficulty
                         </label>
 
-                        <div className="flex gap-2">
+                        <div className="flex flex-wrap gap-2">
                             {DIFFICULTIES.map((d) => (
                                 <button
                                     key={d}
@@ -205,7 +205,7 @@ function Home() {
                         {interviews?.map((s) => (
                             <div
                                 key={s.id}
-                                className="shrink-0 w-64 border border-borderDark rounded-xl p-5 flex flex-col gap-4 transition-all duration-150 hover:border-white/15 cursor-pointer"
+                                className="shrink-0 w-64 border border-borderDark rounded-xl p-5 flex flex-col gap-4 transition-all duration-150"
                                 style={{ background: "rgba(255,255,255,0.02)" }}
                             >
                                 <div className="flex items-start justify-between gap-2">
@@ -225,16 +225,18 @@ function Home() {
                                 </div>
 
                                 <div className="flex items-center justify-between mt-auto">
-                                    <p className="text-[11px] text-white/60"><p className="text-[12px] text-white/40">
-                                        {formatDate(s.started_at)} · {formatDuration(s.started_at, s.completed_at)}
-                                    </p></p>
+                                    <div className="text-[11px] text-white/60">
+                                        <p className="text-[12px] text-white/40">
+                                            {formatDate(s.started_at)} · {formatDuration(s.started_at, s.completed_at)}
+                                        </p>
+                                    </div>
 
                                     {
                                         (s.status === 'abandoned' || s.status === 'active') ? 
-                                        <button onClick={() => handleResumeInterview(s.id)} className="text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                                        <button onClick={() => handleResumeInterview(s.id)} className="cursor-pointer text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                             Resume →
                                         </button> :
-                                        <button className="text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                                        <button className="text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150 cursor-pointer">
                                             Review →
                                         </button>
                                     }

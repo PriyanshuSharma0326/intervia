@@ -66,48 +66,79 @@ function History() {
                     {interviews?.map((interview) => (
                         <div
                             key={interview.id}
-                            className="border border-borderDark rounded-xl px-5 py-4 flex items-center gap-4 transition-all duration-150 hover:border-white/15 cursor-pointer"
+                            className="border border-borderDark rounded-xl p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-150"
                             style={{ background: "rgba(255,255,255,0.02)" }}
                         >
-                            <div className="shrink-0 w-14 text-center">
-                                <p className={`font-display text-[28px] font-medium leading-none ${interview.score != null ? scoreColor(interview.score) : "text-white/40"}`}>
-                                    {interview.score != null ? interview.score : "—"}
-                                </p>
+                            <div className="flex items-start gap-4 w-full min-w-0">
+                                <div className="shrink-0 w-14 text-center">
+                                    <p
+                                        className={`font-display text-[26px] sm:text-[28px] font-medium leading-none ${
+                                            interview.score != null
+                                                ? scoreColor(interview.score)
+                                                : "text-white/40"
+                                        }`}
+                                    >
+                                        {interview.score != null
+                                            ? interview.score
+                                            : "—"}
+                                    </p>
 
-                                <p className="text-[10px] text-white/50 mt-0.5">/100</p>
-                            </div>
-
-                            <div className="w-px h-10 bg-white/6 shrink-0" />
-
-                            <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 mb-1">
-                                    <p className="text-[14px] font-medium text-white truncate">{interview.role}</p>
-
-                                    <span className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-md border ${difficultyColor[interview.difficulty]}`}>
-                                        {interview.difficulty}
-                                    </span>
-
-                                    {interview.status !== "completed" && (
-                                        <span className="shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-md border text-amber-400 bg-amber-400/10 border-amber-400/20">
-                                            Incomplete
-                                        </span>
-                                    )}
+                                    <p className="text-[10px] text-white/50 mt-0.5">
+                                        /100
+                                    </p>
                                 </div>
 
-                                <p className="text-[12px] text-white/40">
-                                    {formatDate(interview.started_at)} · {formatDuration(interview.started_at, interview.completed_at)}
-                                </p>
+                                <div className="w-px h-10 bg-white/6 shrink-0 hidden sm:block" />
+
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                                        <p className="text-[14px] font-medium text-white break-words">
+                                            {interview.role}
+                                        </p>
+
+                                        <span
+                                            className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-md border ${
+                                                difficultyColor[
+                                                    interview.difficulty
+                                                ]
+                                            }`}
+                                        >
+                                            {interview.difficulty}
+                                        </span>
+
+                                        {interview.status !==
+                                            "completed" && (
+                                            <span className="shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-md border text-amber-400 bg-amber-400/10 border-amber-400/20">
+                                                Incomplete
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    <p className="text-[12px] text-white/40">
+                                        {formatDate(interview.started_at)} ·{" "}
+                                        {formatDuration(
+                                            interview.started_at,
+                                            interview.completed_at
+                                        )}
+                                    </p>
+                                </div>
                             </div>
 
-                            {
-                                (interview.status === 'abandoned' || interview.status === 'active') ? 
-                                <button onClick={() => handleResumeInterview(interview.id)} className="cursor-pointer shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
-                                    Resume Interview →
-                                </button> : 
-                                    <button className="shrink-0 text-[12px] cursor-pointer text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                            {(interview.status === "abandoned" ||
+                                interview.status === "active") ? (
+                                <button
+                                    onClick={() =>
+                                        handleResumeInterview(interview.id)
+                                    }
+                                    className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150"
+                                >
+                                    Resume →
+                                </button>
+                            ) : (
+                                <button className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                     Review →
                                 </button>
-                            }
+                            )}
                         </div>
                     ))}
                 </div>

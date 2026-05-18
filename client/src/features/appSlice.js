@@ -7,6 +7,11 @@ const initialStateValue = {
         loading: 'idle',
         error: null,
     },
+    questions: {
+        questions: [],
+        loading: 'idle',
+        error: null,
+    },
 };
 
 const fetchInterviews = createAsyncThunk('app/fetchInterviews', async () => {
@@ -14,6 +19,13 @@ const fetchInterviews = createAsyncThunk('app/fetchInterviews', async () => {
         withCredentials: true,
     });
     return response.data.interviews;
+});
+
+const fetchQuestions = createAsyncThunk('app/fetchQuestions', async () => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}question/all`, {
+        withCredentials: true,
+    });
+    return response.data.questions;
 });
 
 const appSlice = createSlice({
@@ -46,6 +58,17 @@ const appSlice = createSlice({
             state.interviews.loading = 'failed';
             state.interviews.error = action.error.message;
         })
+        .addCase(fetchQuestions.pending, (state) => {
+            state.questions.loading = 'loading';
+        })
+        .addCase(fetchQuestions.fulfilled, (state, action) => {
+            state.questions.loading = 'succeeded';
+            state.questions.questions = action.payload;
+        })
+        .addCase(fetchQuestions.rejected, (state, action) => {
+            state.questions.loading = 'failed';
+            state.questions.error = action.error.message;
+        })
     }
 });
 
@@ -56,6 +79,7 @@ export const {
 
 export {
     fetchInterviews,
+    fetchQuestions,
 }
 
 export default appSlice.reducer;
