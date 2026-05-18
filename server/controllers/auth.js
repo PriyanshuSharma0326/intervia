@@ -70,7 +70,16 @@ async function handleSignup(req, res) {
     }
 }
 
+async function handleLogout(req, res) {
+    res.clearCookie("uid", cookieOptions);
+
+    return res.status(200).json({
+        message: "Logged out successfully",
+    });
+}
+
 module.exports = {
     handleLogin,
     handleSignup,
+    handleLogout,
 }

@@ -1,35 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/auth-context";
-
-const HomeIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-        <polyline points="9 22 9 12 15 12 15 22" />
-    </svg>
-);
-
-const BankIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <rect x="2" y="7" width="20" height="14" rx="2" />
-        <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
-        <line x1="12" y1="12" x2="12" y2="16" />
-        <line x1="10" y1="14" x2="14" y2="14" />
-    </svg>
-);
-
-const HistoryIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-        <polyline points="12 8 12 12 14 14" />
-        <path d="M3.05 11a9 9 0 1 0 .5-4.5" />
-        <polyline points="3 3 3 7 7 7" />
-    </svg>
-);
-
-const NAV_LINKS = [
-    { to: "/", label: "Home", icon: HomeIcon },
-    { to: "/banks", label: "Question Banks", icon: BankIcon },
-    { to: "/history", label: "History", icon: HistoryIcon },
-];
+import AppLogo from '../assets/AppLogo.svg';
+import { NAV_LINKS } from "../lib/statics";
 
 function Sidebar() {
     const { user } = useAuth();
@@ -37,14 +9,8 @@ function Sidebar() {
     return (
         <>
             <aside className="hidden lg:flex flex-col fixed left-0 top-0 h-screen w-60 bg-darkPanel border-r border-borderDark z-40">
-                <div className="px-6 py-6 border-b border-borderDark shrink-0">
-                    <span className="font-display text-xl font-semibold text-white tracking-[-0.4px]">
-                        Prep2<span className="text-brandAccent">Win</span>
-                    </span>
-
-                    <div className="text-[10px] text-white/30 tracking-[1.2px] uppercase font-light mt-0.5">
-                        AI Interview Coach
-                    </div>
+                <div className="px-6 py-3 border-b border-borderDark shrink-0">
+                    <img src={AppLogo} alt="" />
                 </div>
 
                 <nav className="flex flex-col gap-1 px-3 py-4 flex-1">

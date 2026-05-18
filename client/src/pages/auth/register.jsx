@@ -5,6 +5,7 @@ import { registerUser } from "../../lib/apis";
 import { useAuth } from "../../context/auth-context";
 import { isValidEmail } from "../../lib/utils";
 import LoadingModal from "../../components/loading-modal";
+import AppLogo from '../../assets/AppLogo.svg';
 
 function Register() {
     const [showPass, setShowPass] = useState(false);
@@ -125,14 +126,8 @@ function Register() {
                         style={{ background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 68%)" }}
                     />
 
-                    <div className="relative z-10">
-                        <div className="font-display text-2xl font-semibold text-white tracking-[-0.4px] mb-1">
-                            Prep2<span className="text-brandAccent">Win</span>
-                        </div>
-
-                        <div className="text-[11px] text-white/40 tracking-[1.2px] uppercase font-light">
-                            AI Interview Coach
-                        </div>
+                    <div className="relative z-10 h-15">
+                        <img className="h-full" src={AppLogo} alt="" />
                     </div>
 
                     <div className="relative z-10">
@@ -156,7 +151,7 @@ function Register() {
                     </div>
 
                     <div className="relative z-10 text-[11px] text-textSecondary tracking-[0.5px]">
-                        prep2win.io · Powered by AI
+                        intervia.io · Powered by AI
                     </div>
                 </div>
 
@@ -228,12 +223,8 @@ function Register() {
             </div>
 
             <div className="relative z-10 lg:hidden w-full max-w-100 px-6 py-12">
-                <div className="mb-8">
-                    <div className="font-display text-2xl font-semibold text-white tracking-[-0.4px] mb-1">
-                        Prep2<span className="text-brandAccent">Win</span>
-                    </div>
-
-                    <div className="text-[11px] text-white/40 tracking-[1.2px] uppercase font-light">AI Interview Coach</div>
+                <div className="mb-8 h-15">
+                    <img className="h-full" src={AppLogo} alt="" />
                 </div>
 
                 <p className="font-display text-[26px] font-medium text-white mb-1">Create account</p>

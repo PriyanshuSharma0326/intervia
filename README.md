@@ -1,6 +1,6 @@
-# Prep2Win - AI Mock Interview App
+# Intervia - AI Mock Interview App
 
-Prep2Win is a full-stack AI mock interview app that helps developers practice for job interviews with role-based questions, answer feedback, scoring, and performance history.
+Intervia is a full-stack AI mock interview app that helps developers practice for job interviews with role-based questions, answer feedback, scoring, and performance history.
 
 The idea is simple: choose a role, answer interview questions, get AI feedback, and track where you are improving over time.
 

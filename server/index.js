@@ -4,7 +4,8 @@ const express = require('express');
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
 
-const authRouter = require("./routes/auth");
+const authRoute = require("./routes/auth");
+const interviewRoute = require("./routes/interview");
 const { verifyUser } = require("./middlewares/auth");
 require("./connection")
 
@@ -25,7 +26,8 @@ app.get('/me', verifyUser, (req, res) => {
         user: req.user
     });
 });
-app.use('/auth', authRouter);
+app.use('/auth', authRoute);
+app.use('/interview', verifyUser, interviewRoute);
 
 app.listen(port, () => {
     console.log(`Server is running on PORT: ${port}`);

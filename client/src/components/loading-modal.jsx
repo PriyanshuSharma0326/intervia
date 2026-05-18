@@ -1,3 +1,5 @@
+import AppLogo from '../assets/AppLogo.svg';
+
 function LoadingModal({ message = "Loading..." }) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-darkPanel/60">
@@ -8,8 +10,8 @@ function LoadingModal({ message = "Loading..." }) {
                     <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-brandAccent animate-spin" />
                 </div>
 
-                <div className="font-display text-lg font-semibold text-white tracking-[-0.4px]">
-                    Prep2<span className="text-brandAccent">Win</span>
+                <div className="h-14">
+                    <img className="h-full" src={AppLogo} alt="" />
                 </div>
 
                 <p className="text-[13px] text-textOnDarkMuted font-light tracking-wide">

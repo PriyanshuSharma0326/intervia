@@ -6,8 +6,21 @@ import Home from './pages/home';
 import LoadingModal from './components/loading-modal';
 import ProtectedRoute from './routes/protected-route';
 import PublicRoute from './routes/public-route';
+import History from './pages/history';
+import QuestionBanks from './pages/question-banks';
+import Interview from './pages/interview';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchInterviews } from './features/appSlice';
+import Profile from './pages/profile';
 
 function App() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchInterviews());
+    }, []);
+
     return (
         <Router>
             <Routes>
@@ -21,7 +34,15 @@ function App() {
 
                 <Route path='/' element={<ProtectedRoute><SharedLayout /></ProtectedRoute>}>
                     <Route index element={<Home />} />
+
+                    <Route path='history' element={<History />} />
+
+                    <Route path='question-banks' element={<QuestionBanks />} />
+
+                    <Route path='profile' element={<Profile />} />
                 </Route>
+
+                <Route path='/interview' element={<ProtectedRoute><Interview /></ProtectedRoute>} />
             </Routes>
         </Router>
     )
