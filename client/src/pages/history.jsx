@@ -100,7 +100,7 @@ function History() {
                             </div>
 
                             {
-                                interview.status === 'abandoned' ? 
+                                (interview.status === 'abandoned' || interview.status === 'active') ? 
                                 <button onClick={() => handleResumeInterview(interview.id)} className="cursor-pointer shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                     Resume Interview →
                                 </button> : 

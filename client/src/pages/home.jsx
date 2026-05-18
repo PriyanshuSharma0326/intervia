@@ -230,7 +230,7 @@ function Home() {
                                     </p></p>
 
                                     {
-                                        s.status === 'abandoned' ? 
+                                        (s.status === 'abandoned' || s.status === 'active') ? 
                                         <button onClick={() => handleResumeInterview(s.id)} className="text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                             Resume →
                                         </button> :

@@ -123,7 +123,6 @@ function Interview() {
         if(currentQuestion.evaluation_score) return;
 
         try {
-
             const response = await submitAnswer({
                 question: currentQuestion.question,
                 answer: answer,
