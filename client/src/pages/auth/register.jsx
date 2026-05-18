@@ -83,7 +83,11 @@ function Register() {
             }
         }
         catch(err) {
-            setError(err);
+            setError(
+                err.response?.data?.message ||
+                "Login failed"
+            );
+
             console.log(err);
         }
         finally {

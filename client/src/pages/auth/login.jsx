@@ -6,8 +6,12 @@ import { isValidEmail } from "../../lib/utils";
 import { useAuth } from "../../context/auth-context";
 import LoadingModal from "../../components/loading-modal";
 import AppLogo from '../../assets/AppLogo.svg';
+import { useDispatch } from "react-redux";
+import { fetchInterviews } from "../../features/appSlice";
 
 function Login() {
+    const dispatch = useDispatch();
+
     const [showPass, setShowPass] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -62,11 +66,16 @@ function Login() {
                 setUser(response.data.data);
                 setIsAuthenticated(true);
                 setForm(defaultFormInputs);
+                dispatch(fetchInterviews());
                 navigate('/');
             }
         }
         catch(err) {
-            setError(err);
+            setError(
+                err.response?.data?.message ||
+                "Login failed"
+            );
+
             console.log(err);
         }
         finally {

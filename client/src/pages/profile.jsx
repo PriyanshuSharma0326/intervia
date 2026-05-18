@@ -9,6 +9,18 @@ function Profile() {
 
     const lastInterview = interviews?.[0] ?? null;
 
+    const completedInterviews =
+        interviews.filter(i => i.score != null);
+
+    const avgScore = completedInterviews.length > 0
+        ? Math.round(
+            completedInterviews.reduce(
+                (acc, i) => acc + i.score,
+                0
+            ) / completedInterviews.length
+        ) + " / 100"
+        : "0 / 100";
+
     async function handleLogout() {
         try {
             const response = await logoutUser();
@@ -26,7 +38,7 @@ function Profile() {
     return (
         <div className="min-h-screen px-6 py-10 lg:px-12 lg:py-12 max-w-2xl">
             <div className="mb-10">
-                <p className="text-[11px] text-white/70 tracking-[1.2px] uppercase font-light mb-1">
+                <p className="text-[11px] text-white/50 tracking-[1.2px] uppercase font-light mb-1">
                     Account
                 </p>
 
@@ -71,7 +83,7 @@ function Profile() {
 
                         <p className="text-[12px] text-white/85">
                             {interviews?.length
-                                ? Math.round(interviews.filter(i => i.score != null).reduce((acc, i) => acc + i.score, 0) / interviews.filter(i => i.score != null).length) + " / 100"
+                                ? avgScore
                                 : "—"
                             }
                         </p>
@@ -80,7 +92,7 @@ function Profile() {
             </div>
 
             <div className="mb-4">
-                <p className="text-[11px] text-white/60 tracking-[1.2px] uppercase font-light mb-3">
+                <p className="text-[11px] text-white/50 tracking-[1.2px] uppercase font-light mb-3">
                     Last Interview
                 </p>
 
@@ -101,7 +113,7 @@ function Profile() {
                                 {lastInterview.score ?? "—"}
                             </p>
 
-                            <p className="text-[10px] text-white/25 mt-0.5">/100</p>
+                            <p className="text-[10px] text-white/50 mt-0.5">/100</p>
                         </div>
 
                         <div className="w-px h-10 bg-white/6 shrink-0" />
@@ -115,7 +127,7 @@ function Profile() {
                                 </span>
                             </div>
 
-                            <p className="text-[12px] text-white/50">
+                            <p className="text-[12px] text-white/40">
                                 {formatDate(lastInterview.started_at)} · {formatDuration(lastInterview.started_at, lastInterview.completed_at)}
                             </p>
                         </div>

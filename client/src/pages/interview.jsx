@@ -37,7 +37,7 @@ function Interview() {
             recognition.lang = "en-US";
 
             recognition.onresult = (event) => {
-                let transcript = "";
+                let transcript = answer + "";
                 for (let i = 0; i < event.results.length; i++) {
                     transcript += event.results[i][0].transcript;
                 }
@@ -85,6 +85,17 @@ function Interview() {
         }
     };
 
+    function handleChange(e) {
+        setAnswer(e.target.value);
+    }
+
+    function handleFocus() {
+        if (isRecording) {
+            recognitionRef.current.stop();
+            setIsRecording(false);
+        }
+    }
+
     async function handleAbandonInterview() {
         try {
             setLoading(true);
@@ -108,8 +119,6 @@ function Interview() {
             recognitionRef.current?.stop();
             setIsRecording(false);
         }
-
-        if(!answer) return;
 
         if(currentQuestion.evaluation_score) return;
 
@@ -223,10 +232,11 @@ function Interview() {
                             <textarea 
                                 disabled={currentQuestion.evaluation_score ? true : false} 
                                 value={answer}
-                                onChange={(e) => setAnswer(e.target.value)}
+                                onChange={handleChange} 
+                                onFocus={handleFocus}
                                 placeholder="Type your answer here, or click Speak to use your microphone..."
                                 rows={6}
-                                className="w-full bg-transparent text-white/80 text-[14px] leading-relaxed px-4 py-3 resize-none outline-none placeholder:text-white/20"
+                                className="w-full bg-transparent text-white/80 text-[14px] leading-relaxed px-4 py-3 resize-none outline-none placeholder:text-white/40"
                             />
                         </div>
 

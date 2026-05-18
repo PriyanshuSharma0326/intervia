@@ -72,7 +72,7 @@ function Home() {
     return (
         <div className="min-h-screen px-6 py-10 lg:px-12 lg:py-12">
             <div className="mb-10">
-                <p className="text-[11px] text-white/30 tracking-[1.2px] uppercase font-light mb-1">
+                <p className="text-[11px] text-white/50 tracking-[1.2px] uppercase font-light mb-1">
                     {greeting()}
                 </p>
 
@@ -82,7 +82,7 @@ function Home() {
             </div>
 
             <div className="mb-12">
-                <p className="text-[11px] text-white/30 tracking-[1.2px] uppercase font-light mb-4">
+                <p className="text-[11px] text-white/50 tracking-[1.2px] uppercase font-light mb-4">
                     Quick Start
                 </p>
 
@@ -98,7 +98,7 @@ function Home() {
                     </p>
 
                     <div className="mb-6">
-                        <label className="block text-[11px] font-medium text-white/40 tracking-[0.7px] uppercase mb-4">
+                        <label className="block text-[11px] font-medium text-white/50 tracking-[0.7px] uppercase mb-4">
                             Field
                         </label>
 
@@ -125,7 +125,7 @@ function Home() {
 
                         {field && (
                             <>
-                                <label className="block text-[11px] font-medium text-white/40 tracking-[0.7px] uppercase mb-4">
+                                <label className="block text-[11px] font-medium text-white/50 tracking-[0.7px] uppercase mb-4">
                                     Role
                                 </label>
 
@@ -138,7 +138,7 @@ function Home() {
                                                 ${
                                                     role === r
                                                         ? "bg-brandPrimary/15 border-brandAccent/40 text-brandAccent"
-                                                        : "bg-transparent border-borderDark text-white/50 hover:text-white hover:border-white/20"
+                                                        : "bg-transparent border-borderDark text-white/70 hover:text-white hover:border-white/40"
                                                 }`}
                                         >
                                             {r}
@@ -150,7 +150,7 @@ function Home() {
                     </div>
 
                     <div className="mb-8">
-                        <label className="block text-[11px] font-medium text-white/40 tracking-[0.7px] uppercase mb-3">
+                        <label className="block text-[11px] font-medium text-white/50 tracking-[0.7px] uppercase mb-3">
                             Difficulty
                         </label>
 
@@ -162,7 +162,7 @@ function Home() {
                                     className={`cursor-pointer px-5 py-1.5 rounded-lg text-[13px] font-medium border transition-all duration-150
                                         ${difficulty === d
                                             ? difficultyColor[d]
-                                            : "bg-transparent border-borderDark text-white/50 hover:text-white hover:border-white/20"
+                                            : "bg-transparent border-borderDark text-white/70 hover:text-white hover:border-white/40"
                                         }`}
                                 >
                                     {d}
@@ -184,7 +184,7 @@ function Home() {
 
             <div>
                 <div className="flex items-center justify-between mb-4">
-                    <p className="text-[11px] text-white/30 tracking-[1.2px] uppercase font-light">
+                    <p className="text-[11px] text-white/50 tracking-[1.2px] uppercase font-light">
                         Recent Sessions
                     </p>
 
@@ -195,9 +195,9 @@ function Home() {
 
                 {interviews?.length === 0 ? (
                     <div className="border border-borderDark rounded-2xl p-10 flex flex-col items-center justify-center text-center" style={{ background: "rgba(255,255,255,0.02)" }}>
-                        <p className="text-white/30 text-[14px] mb-1">No sessions yet</p>
+                        <p className="text-white/60 text-[14px] mb-1">No sessions yet</p>
 
-                        <p className="text-white/20 text-[12px]">Complete your first interview above to see it here.</p>
+                        <p className="text-white/40 text-[12px]">Complete your first interview above to see it here.</p>
                     </div>
                 ) : (
                     <div className="flex gap-4 overflow-x-auto pb-2 -mx-1 px-1"
@@ -221,11 +221,11 @@ function Home() {
                                         {s.score != null ? s.score : "—"}
                                     </p>
 
-                                    <p className="text-[10px] text-white/25 mt-0.5">/100</p>
+                                    <p className="text-[10px] text-white/50 mt-0.5">/100</p>
                                 </div>
 
                                 <div className="flex items-center justify-between mt-auto">
-                                    <p className="text-[11px] text-white/30"><p className="text-[12px] text-white/30">
+                                    <p className="text-[11px] text-white/60"><p className="text-[12px] text-white/40">
                                         {formatDate(s.started_at)} · {formatDuration(s.started_at, s.completed_at)}
                                     </p></p>
 

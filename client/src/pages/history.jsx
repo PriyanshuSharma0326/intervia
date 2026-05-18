@@ -36,7 +36,7 @@ function History() {
     return (
         <div className="min-h-screen px-6 py-10 lg:px-12 lg:py-12">
             <div className="mb-10">
-                <p className="text-[11px] text-white/30 tracking-[1.2px] uppercase font-light mb-1">
+                <p className="text-[11px] text-white/50 tracking-[1.2px] uppercase font-light mb-1">
                     Your activity
                 </p>
 
@@ -94,7 +94,7 @@ function History() {
                                     )}
                                 </div>
 
-                                <p className="text-[12px] text-white/50">
+                                <p className="text-[12px] text-white/40">
                                     {formatDate(interview.started_at)} · {formatDuration(interview.started_at, interview.completed_at)}
                                 </p>
                             </div>
