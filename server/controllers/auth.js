@@ -1,41 +1,49 @@
 const { createHmac, randomBytes } = require('node:crypto');
-const { createUser, findUser } = require('../queries/auth');
+const { createUser, findUser, updateUserPassword } = require('../queries/auth');
 const { createUserJWT } = require('../services/auth');
 const { cookieOptions } = require('../lib/configs');
 
 async function handleLogin(req, res) {
-    const { email, password } = req.body;
-    const user = await findUser(email);
+    try {
+        const { email, password } = req.body;
+        const user = await findUser(email);
 
-    if(!user) {
-        return res.status(404).json({
-            message: `No user found with email address ${email}`,
+        if(!user) {
+            return res.status(404).json({
+                message: `No user found with email address ${email}`,
+            });
+        }
+
+        const hashedPassword = createHmac('sha256', process.env.HASH_SALT)
+                .update(password)
+                .digest('hex');
+
+        if(user.password !== hashedPassword) {
+            return res.status(401).json({
+                message: "Incorrect password",
+            });
+        }
+
+        const token = createUserJWT(user);
+
+        const {
+            password: userPassword,
+            ...remainingUser
+        } = user;
+
+        res.cookie("uid", token, cookieOptions);
+
+        return res.status(200).json({
+            message: "Credentials verified",
+            data: remainingUser,
         });
     }
-
-    const hashedPassword = createHmac('sha256', process.env.HASH_SALT)
-            .update(password)
-            .digest('hex');
-
-    if(user.password !== hashedPassword) {
-        return res.status(401).json({
-            message: "Incorrect password",
+    catch(err) {
+        return res.status(500).json({
+            message: "Error while logging in",
+            error: err
         });
     }
-
-    const token = createUserJWT(user);
-
-    const {
-        password: userPassword,
-        ...remainingUser
-    } = user;
-
-    res.cookie("uid", token, cookieOptions);
-
-    return res.status(200).json({
-        message: "Credentials verified",
-        data: remainingUser,
-    });
 }
 
 async function handleSignup(req, res) {
@@ -71,15 +79,72 @@ async function handleSignup(req, res) {
 }
 
 async function handleLogout(req, res) {
-    res.clearCookie("uid", cookieOptions);
+    try {
+        res.clearCookie("uid", cookieOptions);
 
-    return res.status(200).json({
-        message: "Logged out successfully",
-    });
+        return res.status(200).json({
+            message: "Logged out successfully",
+        });
+    }
+    catch(err) {
+        return res.status(500).json({
+            message: "Error logging out",
+            error: err
+        });
+    }
+}
+
+async function handleVerifyUser(req, res) {
+    try {
+        const { email } = req.body;
+
+        const user = await findUser(email);
+
+        if(!user) {
+            return res.status(404).json({
+                message: `No user found with email address ${email}`,
+            });
+        }
+
+        return res.status(200).json({
+            message: "User found in database",
+            data: true,
+        });
+    }
+    catch(err) {
+        return res.status(500).json({
+            message: "Error verifying user",
+            error: err
+        });
+    }
+}
+
+async function handleResetUserPassword(req, res) {
+    try {
+        const { email, password } = req.body;
+
+        const hashedPassword = createHmac('sha256', process.env.HASH_SALT)
+            .update(password)
+            .digest('hex');
+
+        await updateUserPassword(email, hashedPassword);
+
+        return res.status(200).json({
+            message: "Password updated",
+        });
+    }
+    catch(err) {
+        return res.status(500).json({
+            message: "Error while updating user password",
+            error: err
+        });
+    }
 }
 
 module.exports = {
     handleLogin,
     handleSignup,
     handleLogout,
+    handleVerifyUser,
+    handleResetUserPassword,
 }

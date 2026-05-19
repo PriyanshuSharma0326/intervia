@@ -96,25 +96,7 @@ function Register() {
     }
 
     return (
-        <div className="min-h-screen w-full bg-darkPanel relative flex items-center justify-center overflow-hidden">
-            <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                    backgroundImage: "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
-                    backgroundSize: "36px 36px",
-                }}
-            />
-
-            <div
-                className="absolute w-100 h-100 rounded-full pointer-events-none -top-20 -left-20"
-                style={{ background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 68%)" }}
-            />
-
-            <div
-                className="absolute w-100 h-100 rounded-full pointer-events-none -bottom-20 -right-15"
-                style={{ background: "radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 68%)" }}
-            />
-
+        <>
             <div className="relative z-10 hidden lg:flex w-full max-w-220 min-h-150 rounded-[20px] overflow-hidden border border-borderDark shadow-[0_24px_64px_rgba(0,0,0,0.45)]">
                 <div className="relative flex flex-1 flex-col justify-between p-12 overflow-hidden bg-darkPanel">
                     <div
@@ -297,7 +279,7 @@ function Register() {
             </div>
 
             {loading && <LoadingModal message="Creating your account..." />}
-        </div>
+        </>
     );
 }
 

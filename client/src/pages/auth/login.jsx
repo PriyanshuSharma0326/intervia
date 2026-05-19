@@ -84,25 +84,7 @@ function Login() {
     }
 
     return (
-        <div className="min-h-screen w-full bg-darkPanel relative flex items-center justify-center overflow-hidden">
-            <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                    backgroundImage: "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
-                    backgroundSize: "36px 36px",
-                }}
-            />
-
-            <div
-                className="absolute w-125 h-125 rounded-full pointer-events-none -bottom-30 -right-25"
-                style={{ background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 68%)" }}
-            />
-
-            <div
-                className="absolute w-90 h-90 rounded-full pointer-events-none -top-20 -left-20"
-                style={{ background: "radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 68%)" }}
-            />
-
+        <>
             <div className="relative z-10 hidden lg:flex w-full max-w-220 min-h-140 rounded-[20px] overflow-hidden border border-borderDark shadow-[0_24px_64px_rgba(0,0,0,0.45)]">
                 <div className="relative flex flex-1 flex-col justify-between p-12 overflow-hidden bg-darkPanel">
                     <div
@@ -182,7 +164,7 @@ function Login() {
                     />
 
                     <div className="text-right mb-6">
-                        <Link to="/forgot-password" className="text-[12px] text-brandAccent no-underline hover:opacity-75 transition-opacity duration-150">
+                        <Link to="/auth/forgot-password" className="text-[12px] text-brandAccent no-underline hover:opacity-75 transition-opacity duration-150">
                             Forgot password?
                         </Link>
                     </div>
@@ -243,7 +225,7 @@ function Login() {
                 />
 
                 <div className="text-right mb-6">
-                    <Link to="/forgot-password" className="text-[12px] text-brandAccent no-underline hover:opacity-75 transition-opacity duration-150">
+                    <Link to="/auth/forgot-password" className="text-[12px] text-brandAccent no-underline hover:opacity-75 transition-opacity duration-150">
                         Forgot password?
                     </Link>
                 </div>
@@ -265,7 +247,7 @@ function Login() {
             </div>
 
             {loading && <LoadingModal message="Signing in..." />}
-        </div>
+        </>
     );
 }
 

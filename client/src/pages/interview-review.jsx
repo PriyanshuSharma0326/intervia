@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchInterview } from "../features/appSlice";
 import { difficultyColor, scoreColor } from "../lib/utils";
+import LoadingModal from "../components/loading-modal";
 
 function InterviewReview() {
     const dispatch = useDispatch();
     const { interviewId } = useParams();
-    const { interview } = useSelector((state) => state.app.interview);
+    const { interview, loading } = useSelector((state) => state.app.interview);
 
     useEffect(() => {
         if (interviewId) {
@@ -64,13 +65,12 @@ function InterviewReview() {
                 <span className="text-[12px] text-white/50">{formatDuration(data?.started_at, data?.completed_at)}</span>
             </div>
 
-            <div className="grid grid-cols-3 gap-3 mb-10">
+            <div className="flex flex-col sm:flex-row gap-3 mb-10">
                 <div
-                    className="border border-borderDark rounded-xl p-5 flex flex-col gap-1"
+                    className="flex-1 border border-borderDark rounded-xl p-5 flex flex-col gap-1"
                     style={{ background: "rgba(255,255,255,0.02)" }}
                 >
                     <p className="text-[10px] text-white/50 tracking-[0.8px] uppercase">Score</p>
-
                     <p className={`font-display text-[36px] font-medium leading-none ${data?.score != null ? scoreColor(data?.score) : "text-white/20"}`}>
                         {data?.score ?? "—"}
                         <span className="text-[14px] text-white/40 font-sans ml-1">/100</span>
@@ -78,11 +78,10 @@ function InterviewReview() {
                 </div>
 
                 <div
-                    className="border border-borderDark rounded-xl p-5 flex flex-col gap-1"
+                    className="flex-1 border border-borderDark rounded-xl p-5 flex flex-col gap-1"
                     style={{ background: "rgba(255,255,255,0.02)" }}
                 >
                     <p className="text-[10px] text-white/50 tracking-[0.8px] uppercase">Answered</p>
-
                     <p className="font-display text-[36px] font-medium leading-none text-white">
                         {answered?.length}
                         <span className="text-[14px] text-white/40 font-sans ml-1">/ {questions?.length}</span>
@@ -90,11 +89,10 @@ function InterviewReview() {
                 </div>
 
                 <div
-                    className="border border-borderDark rounded-xl p-5 flex flex-col gap-1"
+                    className="flex-1 border border-borderDark rounded-xl p-5 flex flex-col gap-1"
                     style={{ background: "rgba(255,255,255,0.02)" }}
                 >
                     <p className="text-[10px] text-white/50 tracking-[0.8px] uppercase">Status</p>
-
                     <p className={`text-[15px] font-medium mt-2 ${data?.status === "completed" ? "text-emerald-400" : "text-amber-400"}`}>
                         {data?.status === "completed" ? "Completed" : "Incomplete"}
                     </p>
@@ -197,6 +195,8 @@ function InterviewReview() {
                     </div>
                 </div>
             )}
+
+            {loading === 'loading' && <LoadingModal message="Please wait..." />}
         </div>
     );
 }

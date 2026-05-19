@@ -20,7 +20,7 @@ function Sidebar() {
                             to={to}
                             end
                             className={({ isActive }) =>
-                                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 no-underline
+                                `flex outline-none items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150 no-underline
                                 ${isActive
                                     ? "bg-brandPrimary/15 text-brandAccent"
                                     : "text-white/50 hover:text-white hover:bg-white/5"

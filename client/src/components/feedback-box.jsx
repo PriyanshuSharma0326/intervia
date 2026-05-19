@@ -22,7 +22,7 @@ function FeedbackBox({ feedback, score }) {
                     </p>
                 </div>
             ) : (
-                <p className="text-white/30 text-sm">
+                <p className="text-white/40 text-sm">
                     Submit your answer to get evaluation.
                 </p>
             )}

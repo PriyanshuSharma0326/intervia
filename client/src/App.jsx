@@ -14,6 +14,8 @@ import { fetchInterviews } from './features/appSlice';
 import Profile from './pages/profile';
 import ScrollToTop from './components/scroll-to-top';
 import InterviewReview from './pages/interview-review';
+import AuthRoute from './routes/auth-route';
+import ForgotPassword from './pages/auth/forgot-password';
 
 function App() {
     const dispatch = useDispatch();
@@ -27,12 +29,14 @@ function App() {
             <ScrollToTop />
 
             <Routes>
-                <Route path='/auth'>
+                <Route path='/auth' element={<PublicRoute><AuthRoute /></PublicRoute>}>
                     <Route index element={<Navigate to="/auth/login" />} />
 
-                    <Route path='login' element={<PublicRoute><Login /></PublicRoute>} />
+                    <Route path='login' element={<Login />} />
 
-                    <Route path='register' element={<PublicRoute><Register /></PublicRoute>} />
+                    <Route path='register' element={<Register />} />
+
+                    <Route path='forgot-password' element={<ForgotPassword />} />
                 </Route>
 
                 <Route path='/' element={<ProtectedRoute><SharedLayout /></ProtectedRoute>}>

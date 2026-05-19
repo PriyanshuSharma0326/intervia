@@ -94,6 +94,28 @@ async function logoutUser() {
     return response;
 }
 
+async function checkEmailExists(callBody) {
+    const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}auth/forgot-password`, 
+        callBody,
+        {
+            withCredentials: true,
+        }
+    );
+    return response;
+}
+
+async function resetPassword(callBody) {
+    const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}auth/reset-password`, 
+        callBody,
+        {
+            withCredentials: true,
+        }
+    );
+    return response;
+}
+
 export {
     loginUser,
     logoutUser,
@@ -103,4 +125,6 @@ export {
     submitInterview,
     abandonInterview,
     resumeInterview,
+    checkEmailExists,
+    resetPassword,
 }

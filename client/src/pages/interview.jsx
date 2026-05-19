@@ -39,9 +39,11 @@ function Interview() {
             recognition.onresult = (event) => {
                 let transcript = "";
                 for (let i = 0; i < event.results.length; i++) {
-                    transcript += event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        transcript += event.results[i][0].transcript + " ";
+                    }
                 }
-                setAnswer(transcript);
+                setAnswer(transcript.trim());
             };
 
             recognition.onend = () => {
@@ -49,6 +51,12 @@ function Interview() {
             };
 
             recognitionRef.current = recognition;
+
+            return () => {
+                recognition.onresult = null;
+                recognition.onend = null;
+                recognition.abort();
+            };
         }
     }, []);
 
@@ -58,8 +66,13 @@ function Interview() {
             recognitionRef.current.stop();
             setIsRecording(false);
         } else {
-            recognitionRef.current.start();
-            setIsRecording(true);
+            try {
+                recognitionRef.current.start();
+                setIsRecording(true);
+            } catch (err) {
+                console.error("Mic error:", err);
+                setIsRecording(false);
+            }
         }
     };
 
@@ -245,33 +258,40 @@ function Interview() {
                             score={currentQuestion.evaluation_score} 
                         />
 
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <button
                                 onClick={handlePrev}
                                 disabled={currentIndex === 0}
-                                className="cursor-pointer text-[13px] text-white/70 hover:text-white disabled:opacity-20 disabled:cursor-not-allowed transition-colors duration-150"
+                                className="cursor-pointer text-[13px] text-white/70 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150 text-left"
                             >
                                 ← Previous
                             </button>
-                            
+
                             <div className="flex items-center gap-2">
-                                <button onClick={handleSubmitAnswer} className={`text-[13px] px-4 py-2 rounded-lg ${!currentQuestion.evaluation_score ? 'bg-white hover:bg-white/90 cursor-pointer' : 'bg-green-500'}  text-darkPanel font-medium`}>
-                                    {currentQuestion.evaluation_score ? 'Answer submitted' : 'Submit Answer'}
+                                <button
+                                    onClick={handleSubmitAnswer}
+                                    className={`flex-1 sm:flex-none text-[13px] px-4 py-2 rounded-lg font-medium transition-all duration-150
+                                        ${currentQuestion.evaluation_score
+                                            ? "bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 cursor-default"
+                                            : "bg-white hover:bg-white/90 text-darkPanel cursor-pointer"
+                                        }`}
+                                >
+                                    {currentQuestion.evaluation_score ? "✓ Submitted" : "Submit Answer"}
                                 </button>
 
                                 {currentIndex === totalQuestions - 1 ? (
                                     <button
                                         onClick={handleSubmitInterview}
-                                        className="text-[13px] px-4 py-2 rounded-lg bg-white text-darkPanel font-medium hover:bg-white/90 transition-all duration-150 cursor-pointer"
+                                        className="flex-1 sm:flex-none text-[13px] px-4 py-2 rounded-lg bg-brandPrimary hover:bg-brandHover text-white font-medium transition-all duration-150 cursor-pointer"
                                     >
-                                        {questions.length < 10 ? 'Submit Answer' : 'Finish Interview'} →
+                                        {questions.length < 10 ? "Submit Answer" : "Finish"} →
                                     </button>
                                 ) : (
                                     <button
                                         onClick={handleNext}
-                                        className="text-[13px] px-4 py-2 rounded-lg bg-white/10 border border-borderDark text-white/70 hover:bg-white/20 hover:text-white transition-all duration-150 cursor-pointer"
+                                        className="flex-1 sm:flex-none text-[13px] px-4 py-2 rounded-lg bg-white/10 border border-borderDark text-white/70 hover:bg-white/20 hover:text-white transition-all duration-150 cursor-pointer"
                                     >
-                                        Next question →
+                                        Next →
                                     </button>
                                 )}
                             </div>
