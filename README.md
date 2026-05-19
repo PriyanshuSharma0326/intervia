@@ -7,6 +7,7 @@ The app is built as a practical job-prep tool and a portfolio project that demon
 ## Features
 
 - User signup, login, logout, and protected routes
+- Forgot-password flow with email verification and direct password reset
 - JWT authentication stored in an HTTP-only cookie
 - Field, role, and difficulty selection
 - AI-generated interview sessions with 10 questions
@@ -90,6 +91,7 @@ ai-interview-app/
 | --- | --- |
 | `/auth/login` | Login page |
 | `/auth/register` | Registration page |
+| `/auth/forgot-password` | Verify email and reset password |
 | `/` | Home dashboard and interview starter |
 | `/interview` | Active interview session |
 | `/history` | Interview history |
@@ -105,6 +107,8 @@ ai-interview-app/
 | POST | `/auth/register` | Create a new user and set auth cookie |
 | POST | `/auth/login` | Log in and set auth cookie |
 | POST | `/auth/logout` | Clear auth cookie |
+| POST | `/auth/forgot-password` | Verify that an email belongs to an existing user |
+| POST | `/auth/reset-password` | Update the password for a verified email |
 | GET | `/me` | Return the authenticated user |
 
 ### Interview
@@ -134,6 +138,18 @@ All interview routes are protected by `verifyUser`.
 9. The backend stores the answer, feedback, score, and answered timestamp.
 10. When the interview is finished, the frontend totals the scores and submits the final interview score.
 11. The user can view past sessions, resume incomplete interviews, and review completed interviews.
+
+## Password Reset Flow
+
+1. The user opens `/auth/forgot-password`.
+2. The user enters their email address.
+3. The frontend calls `/auth/forgot-password` to verify that the email exists.
+4. After verification, the user enters and confirms a new password.
+5. The frontend calls `/auth/reset-password`.
+6. The backend hashes the new password with the configured `HASH_SALT`.
+7. The UI shows a password reset success modal with a link back to sign in.
+
+This is currently a direct in-app reset flow. Email delivery and one-time reset tokens are good next improvements for production use.
 
 ## Getting Started
 
@@ -324,6 +340,24 @@ npm run lint     # Run ESLint
 }
 ```
 
+### Verify Email for Password Reset
+
+```json
+{
+    "email": "priyanshu@example.com"
+}
+```
+
+### Reset Password
+
+```json
+{
+    "email": "priyanshu@example.com",
+    "password": "newPassword123",
+    "confirmPassword": "newPassword123"
+}
+```
+
 ## Supported Interview Fields
 
 Intervia currently includes role presets for:
@@ -355,6 +389,7 @@ Intervia currently includes role presets for:
 
 - Add formal database migrations
 - Add stronger password hashing with bcrypt or Argon2
+- Replace direct password reset with tokenized email reset links
 - Add richer AI session summaries with strengths and weak areas
 - Add charts for progress over time
 - Add automated tests for auth, interview routes, and AI response parsing
