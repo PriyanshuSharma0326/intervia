@@ -54,3 +54,21 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: black !important;
     transition: background-color 5000s ease-in-out 0s;
 }
+
+@keyframes sparkle-lg {
+    0%, 100% { opacity: 0.25; transform: scale(0.78) }
+    45%       { opacity: 1;    transform: scale(1) }
+}
+@keyframes sparkle-md {
+    0%, 100% { opacity: 1;    transform: scale(1) }
+    45%       { opacity: 0.2;  transform: scale(0.72) }
+}
+@keyframes sparkle-xs {
+    0%, 100% { opacity: 0.15;  transform: scale(0.6); }
+    40%       { opacity: 0.8;    transform: scale(1.05); }
+}
+
+@keyframes sparkle-label {
+    0%, 100% { opacity: 0.5; }
+    45%       { opacity: 1; }
+}

@@ -1,23 +1,82 @@
-import AppLogo from '../assets/AppLogo.svg';
-
-function LoadingModal({ message = "Loading..." }) {
+function LoadingModal({ message = "Generating suggestions..." }) {
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-darkPanel/60">
-            <div className="flex flex-col items-center gap-5">
-                <div className="relative w-12 h-12">
-                    <div className="absolute inset-0 rounded-full border-2 border-brandAccent/15" />
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 backdrop-blur-sm bg-darkPanel/40">
+            <div className="relative w-[90px] h-[90px]" role="status" aria-label="Loading">
+                <svg width="0" height="0" style={{ position: 'absolute', overflow: 'hidden' }}>
+                    <defs>
+                        <linearGradient id="sparkle-grad-lg" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%"   stopColor="#a5b4fc" />
 
-                    <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-brandAccent animate-spin" />
+                            <stop offset="50%"  stopColor="#a78bfa" />
+
+                            <stop offset="100%" stopColor="#e879f9" />
+                        </linearGradient>
+
+                        <linearGradient id="sparkle-grad-md" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%"   stopColor="#c4b5fd" />
+
+                            <stop offset="100%" stopColor="#f0abfc" />
+                        </linearGradient>
+
+                        <linearGradient id="sparkle-grad-xs" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%"   stopColor="#ddd6fe" />
+
+                            <stop offset="100%" stopColor="#f5d0fe" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <div style={{
+                    position: 'absolute',
+                    width: 62, height: 62,
+                    left: 4, bottom: 4,
+                    transformOrigin: 'center',
+                    animation: 'sparkle-lg 1.4s cubic-bezier(0.45,0,0.55,1) infinite',
+                }}>
+                    <svg viewBox="0 0 100 100" fill="none" width="100%" height="100%">
+                        <path
+                            d="M50 4 C50 4 56 44 96 50 C56 56 50 96 50 96 C50 96 44 56 4 50 C44 44 50 4 50 4Z"
+                            fill="url(#sparkle-grad-lg)"
+                        />
+                    </svg>
                 </div>
 
-                <div className="h-14">
-                    <img className="h-full" src={AppLogo} alt="" />
+                <div style={{
+                    position: 'absolute',
+                    width: 34, height: 34,
+                    right: 2, top: 4,
+                    transformOrigin: 'center',
+                    animation: 'sparkle-md 1.4s cubic-bezier(0.45,0,0.55,1) infinite',
+                    animationDelay: '0.15s',
+                }}>
+                    <svg viewBox="0 0 100 100" fill="none" width="100%" height="100%">
+                        <path
+                            d="M50 4 C50 4 56 44 96 50 C56 56 50 96 50 96 C50 96 44 56 4 50 C44 44 50 4 50 4Z"
+                            fill="url(#sparkle-grad-md)"
+                        />
+                    </svg>
                 </div>
 
-                <p className="text-[13px] text-textOnDarkMuted font-light tracking-wide">
-                    {message}
-                </p>
+                <div style={{
+                    position: 'absolute',
+                    width: 18, height: 18,
+                    right: 8, bottom: 12,
+                    transformOrigin: 'center',
+                    animation: 'sparkle-xs 1.4s cubic-bezier(0.45,0,0.55,1) infinite',
+                    animationDelay: '',
+                }}>
+                    <svg viewBox="0 0 100 100" fill="none" width="100%" height="100%">
+                        <path
+                            d="M50 4 C50 4 56 44 96 50 C56 56 50 96 50 96 C50 96 44 56 4 50 C44 44 50 4 50 4Z"
+                            fill="url(#sparkle-grad-xs)"
+                        />
+                    </svg>
+                </div>
             </div>
+
+            <p className="text-[13px] text-textOnDarkMuted font-light tracking-widest" style={{ animation: 'sparkle-label 2.4s ease-in-out infinite' }}>
+                {message}
+            </p>
         </div>
     );
 }
