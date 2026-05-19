@@ -16,13 +16,17 @@ import ScrollToTop from './components/scroll-to-top';
 import InterviewReview from './pages/interview-review';
 import AuthRoute from './routes/auth-route';
 import ForgotPassword from './pages/auth/forgot-password';
+import { useAuth } from './context/auth-context';
 
 function App() {
     const dispatch = useDispatch();
+    const { loading, isAuthenticated } = useAuth();
 
     useEffect(() => {
-        dispatch(fetchInterviews());
-    }, []);
+        if (!loading && isAuthenticated) {
+            dispatch(fetchInterviews());
+        }
+    }, [dispatch, loading, isAuthenticated]);
 
     return (
         <Router>

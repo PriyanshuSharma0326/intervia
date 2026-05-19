@@ -66,7 +66,6 @@ function Login() {
                 setUser(response.data.data);
                 setIsAuthenticated(true);
                 setForm(defaultFormInputs);
-                dispatch(fetchInterviews());
                 navigate('/');
             }
         }
