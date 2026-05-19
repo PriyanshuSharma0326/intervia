@@ -12,6 +12,11 @@ const initialStateValue = {
         loading: 'idle',
         error: null,
     },
+    interview: {
+        interview: {},
+        loading: 'idle',
+        error: null,
+    },
 };
 
 const fetchInterviews = createAsyncThunk('app/fetchInterviews', async () => {
@@ -21,11 +26,11 @@ const fetchInterviews = createAsyncThunk('app/fetchInterviews', async () => {
     return response.data.interviews;
 });
 
-const fetchQuestions = createAsyncThunk('app/fetchQuestions', async () => {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}question/all`, {
+const fetchInterview = createAsyncThunk('app/fetchInterview', async (id) => {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}interview/${id}`, {
         withCredentials: true,
     });
-    return response.data.questions;
+    return response.data.interview;
 });
 
 const appSlice = createSlice({
@@ -58,16 +63,16 @@ const appSlice = createSlice({
             state.interviews.loading = 'failed';
             state.interviews.error = action.error.message;
         })
-        .addCase(fetchQuestions.pending, (state) => {
-            state.questions.loading = 'loading';
+        .addCase(fetchInterview.pending, (state) => {
+            state.interview.loading = 'loading';
         })
-        .addCase(fetchQuestions.fulfilled, (state, action) => {
-            state.questions.loading = 'succeeded';
-            state.questions.questions = action.payload;
+        .addCase(fetchInterview.fulfilled, (state, action) => {
+            state.interview.loading = 'succeeded';
+            state.interview.interview = action.payload;
         })
-        .addCase(fetchQuestions.rejected, (state, action) => {
-            state.questions.loading = 'failed';
-            state.questions.error = action.error.message;
+        .addCase(fetchInterview.rejected, (state, action) => {
+            state.interview.loading = 'failed';
+            state.interview.error = action.error.message;
         })
     }
 });
@@ -79,7 +84,7 @@ export const {
 
 export {
     fetchInterviews,
-    fetchQuestions,
+    fetchInterview,
 }
 
 export default appSlice.reducer;

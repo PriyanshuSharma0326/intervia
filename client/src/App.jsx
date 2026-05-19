@@ -7,20 +7,19 @@ import LoadingModal from './components/loading-modal';
 import ProtectedRoute from './routes/protected-route';
 import PublicRoute from './routes/public-route';
 import History from './pages/history';
-import QuestionBanks from './pages/question-banks';
 import Interview from './pages/interview';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { fetchInterviews, fetchQuestions } from './features/appSlice';
+import { fetchInterviews } from './features/appSlice';
 import Profile from './pages/profile';
 import ScrollToTop from './components/scroll-to-top';
+import InterviewReview from './pages/interview-review';
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchInterviews());
-        dispatch(fetchQuestions());
     }, []);
 
     return (
@@ -29,7 +28,7 @@ function App() {
 
             <Routes>
                 <Route path='/auth'>
-                    <Route index element={<Navigate to="login" />} />
+                    <Route index element={<Navigate to="/auth/login" />} />
 
                     <Route path='login' element={<PublicRoute><Login /></PublicRoute>} />
 
@@ -41,7 +40,11 @@ function App() {
 
                     <Route path='history' element={<History />} />
 
-                    <Route path='question-banks' element={<QuestionBanks />} />
+                    <Route path='review'>
+                        <Route index element={<Navigate to="/" />} />
+
+                        <Route path=':interviewId' element={<InterviewReview />} />
+                    </Route> 
 
                     <Route path='profile' element={<Profile />} />
                 </Route>

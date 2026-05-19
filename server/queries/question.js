@@ -13,18 +13,6 @@ async function getAllInterviewQuestionsByInterviewId(id) {
     return result.rows;
 }
 
-async function getAllInterviewQuestions() {
-    const query = `
-        SELECT *
-        FROM interview_questions
-    `;
-
-    const result = await pool.query(query);
-
-    return result.rows;
-}
-
 module.exports = {
-    getAllInterviewQuestions,
     getAllInterviewQuestionsByInterviewId,
 }

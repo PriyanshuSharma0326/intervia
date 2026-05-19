@@ -37,7 +37,7 @@ function Interview() {
             recognition.lang = "en-US";
 
             recognition.onresult = (event) => {
-                let transcript = answer + "";
+                let transcript = "";
                 for (let i = 0; i < event.results.length; i++) {
                     transcript += event.results[i][0].transcript;
                 }
@@ -52,7 +52,7 @@ function Interview() {
         }
     }, []);
 
-    const toggleMic = () => {
+    function toggleMic() {
         if (!recognitionRef.current) return;
         if (isRecording) {
             recognitionRef.current.stop();
@@ -63,7 +63,7 @@ function Interview() {
         }
     };
 
-    const handleNext = () => {
+    function handleNext() {
         if (currentIndex < totalQuestions - 1) {
             setCurrentIndex((i) => i + 1);
             setAnswer("");
@@ -74,7 +74,7 @@ function Interview() {
         }
     };
 
-    const handlePrev = () => {
+    function handlePrev() {
         if (currentIndex > 0) {
             setCurrentIndex((i) => i - 1);
             setAnswer("");
@@ -174,27 +174,28 @@ function Interview() {
                 }}
             />
 
-            <div className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-borderDark">
-                <div className="flex items-center gap-3">
+            <div className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-borderDark">
+                <div className="flex items-center gap-2 min-w-0">
                     <div className="w-40 h-auto">
                         <img src={AppLogo} alt="" />
                     </div>
 
-                    <span className="text-white/20 text-sm">·</span>
+                    <span className="text-white/20 text-sm hidden sm:block">·</span>
 
-                    <span className="text-[13px] text-white/40">{interview?.role}</span>
+                    <span className="text-[12px] text-white/40 truncate hidden sm:block">{interview?.role}</span>
 
-                    <span className={`text-[11px] font-medium px-2 py-0.5 rounded-md border ${difficultyColor[interview?.difficulty]}`}>
+                    <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-md border shrink-0 ${difficultyColor[interview?.difficulty]}`}>
                         {interview?.difficulty}
                     </span>
                 </div>
 
                 <button
-                    onClick={handleAbandonInterview} 
-                    className="cursor-pointer flex items-center gap-1.5 text-[13px] text-white/40 hover:text-white transition-colors duration-150"
+                    onClick={handleAbandonInterview}
+                    className="cursor-pointer shrink-0 flex items-center gap-1.5 text-[12px] text-white/40 hover:text-white transition-colors duration-150 ml-3"
                 >
                     <CrossIcon />
-                    End interview
+                    <span className="hidden sm:inline">End interview</span>
+                    <span className="sm:hidden">End</span>
                 </button>
             </div>
 

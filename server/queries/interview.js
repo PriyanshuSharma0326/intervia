@@ -1,15 +1,15 @@
 const pool = require("../connection");
 const { queryPool } = require("../lib/utils");
 
-async function createInterview(id, role, difficulty) {
+async function createInterview(id, role, difficulty, work_field) {
     const query = `
-        INSERT INTO interviews (user_id, role, difficulty)
-        VALUES ($1, $2, $3)
+        INSERT INTO interviews (user_id, role, difficulty, work_field)
+        VALUES ($1, $2, $3, $4)
         RETURNING *
     `;
 
     return (
-        await queryPool(query, [id, role, difficulty])
+        await queryPool(query, [id, role, difficulty, work_field])
     );
 }
 

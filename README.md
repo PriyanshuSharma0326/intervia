@@ -1,47 +1,26 @@
 # Intervia - AI Mock Interview App
 
-Intervia is a full-stack AI mock interview app that helps developers practice for job interviews with role-based questions, answer feedback, scoring, and performance history.
+Intervia is a full-stack AI mock interview platform for practicing role-based interviews. Users can create an account, choose a work field, select a role and difficulty, answer AI-generated questions, receive AI feedback and scores, and review their interview history over time.
 
-The idea is simple: choose a role, answer interview questions, get AI feedback, and track where you are improving over time.
+The app is built as a practical job-prep tool and a portfolio project that demonstrates authentication, frontend state management, backend APIs, PostgreSQL persistence, and AI integration in one product.
 
-## Why This Project Stands Out
+## Features
 
-This project combines the pieces interviewers like to talk about in one practical app:
-
-- React frontend with protected routes and auth flows
-- Node.js and Express API
-- PostgreSQL/Supabase persistence
-- JWT authentication with HTTP-only cookies
-- AI integration for question generation and answer evaluation
-- A real use case for job seekers and developers preparing for interviews
-
-It is also a strong portfolio story: "I built this while job hunting to practice interviews and track my progress."
-
-## Current Status
-
-The project currently has the authentication foundation in place:
-
-- User registration
-- User login
-- JWT token creation
-- HTTP-only auth cookie
-- Protected `/me` route
-- React auth context
-- Public and protected frontend routes
-- Login and register pages
-- PostgreSQL/Supabase connection
-
-The AI interview flow, scoring, summaries, and history features are planned next.
-
-## Planned Core Features
-
-1. Auth - signup, login, JWT-based sessions
-2. Role selection - Frontend, Backend, Full Stack, and more
-3. Interview session - AI generates 5-10 questions one by one
-4. Answer input - text first, voice input later
-5. AI evaluation - score and feedback for each answer
-6. Session summary - overall score, strengths, and weak areas
-7. History - previous interview sessions and scores stored in PostgreSQL/Supabase
+- User signup, login, logout, and protected routes
+- JWT authentication stored in an HTTP-only cookie
+- Field, role, and difficulty selection
+- AI-generated interview sessions with 10 questions
+- Text answer input
+- Browser speech-to-text answer input where supported
+- Per-answer AI feedback and score
+- Interview completion with total score out of 100
+- Active, abandoned, resumed, and completed interview states
+- Interview history page
+- Interview review page with answered and unanswered questions
+- Profile page with user details, total interviews, average score, and latest session
+- Redux Toolkit state management for interviews and app data
+- Supabase/PostgreSQL-compatible database access
+- Vercel SPA rewrite config for the frontend
 
 ## Tech Stack
 
@@ -51,41 +30,49 @@ The AI interview flow, scoring, summaries, and history features are planned next
 - Vite
 - Tailwind CSS
 - React Router
+- Redux Toolkit
+- React Redux
 - Axios
-- Redux Toolkit planned for larger app state
+- React Markdown
 
 ### Backend
 
 - Node.js
 - Express
+- PostgreSQL with `pg`
 - JWT
 - Cookie Parser
 - CORS
-- PostgreSQL with `pg`
+- Groq SDK
+
+### AI
+
+- Groq API
+- Current model: `llama-3.3-70b-versatile`
+- Installed but not currently wired in the active AI service: OpenAI SDK and Google GenAI SDK
 
 ### Database
 
 - PostgreSQL
 - Supabase compatible
-- Prisma ORM planned as the schema grows
-
-### AI
-
-- Gemini API or OpenAI API planned for question generation and answer evaluation
 
 ## Project Structure
 
 ```txt
 ai-interview-app/
-|-- client/                 # React Vite frontend
+|-- client/                         # React Vite frontend
 |   |-- public/
+|   |-- vercel.json                 # SPA routing rewrites
 |   `-- src/
+|       |-- app/                    # Redux store
+|       |-- assets/
 |       |-- components/
-|       |-- context/
-|       |-- lib/
-|       |-- pages/
-|       `-- routes/
-|-- server/                 # Node + Express backend
+|       |-- context/                # Auth context
+|       |-- features/               # Redux slices
+|       |-- lib/                    # API helpers, constants, icons, utilities
+|       |-- pages/                  # App pages
+|       `-- routes/                 # Protected/public/shared layouts
+|-- server/                         # Node + Express backend
 |   |-- controllers/
 |   |-- lib/
 |   |-- middlewares/
@@ -97,6 +84,57 @@ ai-interview-app/
 `-- README.md
 ```
 
+## App Routes
+
+| Route | Description |
+| --- | --- |
+| `/auth/login` | Login page |
+| `/auth/register` | Registration page |
+| `/` | Home dashboard and interview starter |
+| `/interview` | Active interview session |
+| `/history` | Interview history |
+| `/review/:interviewId` | Detailed interview review |
+| `/profile` | User profile and stats |
+
+## API Routes
+
+### Auth
+
+| Method | Route | Description |
+| --- | --- | --- |
+| POST | `/auth/register` | Create a new user and set auth cookie |
+| POST | `/auth/login` | Log in and set auth cookie |
+| POST | `/auth/logout` | Clear auth cookie |
+| GET | `/me` | Return the authenticated user |
+
+### Interview
+
+All interview routes are protected by `verifyUser`.
+
+| Method | Route | Description |
+| --- | --- | --- |
+| GET | `/interview/all` | Get all interviews for the logged-in user |
+| POST | `/interview/start` | Create an interview and generate questions |
+| GET | `/interview/:interviewId` | Get interview details and questions |
+| PUT | `/interview/answer/:questionId` | Submit an answer and get AI feedback |
+| PUT | `/interview/submit/:interviewId` | Mark interview as completed with final score |
+| PUT | `/interview/abandon/:interviewId` | Mark interview as abandoned |
+| PUT | `/interview/resume/:interviewId` | Resume an incomplete interview |
+
+## How It Works
+
+1. The user signs up or logs in.
+2. The frontend checks the session with `/me`.
+3. The user selects a field, role, and difficulty.
+4. The backend creates an interview record.
+5. Groq generates 10 role-specific interview questions.
+6. Questions are saved in PostgreSQL.
+7. The user answers questions with text or browser speech recognition.
+8. Each submitted answer is evaluated by Groq.
+9. The backend stores the answer, feedback, score, and answered timestamp.
+10. When the interview is finished, the frontend totals the scores and submits the final interview score.
+11. The user can view past sessions, resume incomplete interviews, and review completed interviews.
+
 ## Getting Started
 
 ### Prerequisites
@@ -104,7 +142,7 @@ ai-interview-app/
 - Node.js
 - npm
 - PostgreSQL database or Supabase project
-- Gemini or OpenAI API key when AI features are added
+- Groq API key
 
 ### 1. Clone the Repository
 
@@ -129,21 +167,20 @@ PORT=8000
 DATABASE_URL=your_postgresql_connection_string
 JWT_SECRET=your_jwt_secret
 HASH_SALT=your_password_hash_salt
+GROQ_API_KEY=your_groq_api_key
+CLIENT_URL=http://localhost:5173
 NODE_ENV=development
 ```
 
-Future AI variables may include:
+`CLIENT_URL` is used by CORS. For production, set it to your deployed frontend URL.
 
-```env
-GEMINI_API_KEY=your_gemini_api_key
-OPENAI_API_KEY=your_openai_api_key
-```
+### 4. Create Database Tables
 
-### 4. Create the Users Table
-
-The current auth flow expects a `users` table. For PostgreSQL/Supabase, you can start with:
+The app expects `users`, `interviews`, and `interview_questions` tables.
 
 ```sql
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name TEXT NOT NULL,
@@ -151,12 +188,36 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+CREATE TABLE interviews (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    role TEXT NOT NULL,
+    difficulty TEXT NOT NULL,
+    work_field TEXT,
+    score INTEGER,
+    status TEXT NOT NULL DEFAULT 'active',
+    started_at TIMESTAMPTZ DEFAULT NOW(),
+    completed_at TIMESTAMPTZ
+);
+
+CREATE TABLE interview_questions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    interview_id UUID NOT NULL REFERENCES interviews(id) ON DELETE CASCADE,
+    question TEXT NOT NULL,
+    question_order INTEGER NOT NULL,
+    answer TEXT,
+    feedback TEXT,
+    evaluation_score INTEGER,
+    answered_at TIMESTAMPTZ,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
 ```
 
 ### 5. Start the Backend
 
 ```bash
-npm run dev
+npm start
 ```
 
 The API runs on:
@@ -164,6 +225,14 @@ The API runs on:
 ```txt
 http://localhost:8000
 ```
+
+The backend also has a dev script:
+
+```bash
+npm run dev
+```
+
+That script uses `nodemon`, so make sure `nodemon` is available if you use it.
 
 ### 6. Install Frontend Dependencies
 
@@ -181,6 +250,8 @@ Create a `.env` file inside `client/`:
 ```env
 VITE_API_URL=http://localhost:8000/
 ```
+
+Keep the trailing slash because frontend API helpers append route paths directly.
 
 ### 8. Start the Frontend
 
@@ -200,8 +271,8 @@ http://localhost:5173
 
 ```bash
 cd server
-npm run dev      # Start backend with nodemon
 npm start        # Start backend with node
+npm run dev      # Start backend with nodemon if available
 ```
 
 ### Frontend
@@ -214,19 +285,9 @@ npm run preview  # Preview production build
 npm run lint     # Run ESLint
 ```
 
-## API Routes
+## Request Examples
 
-### Auth
-
-| Method | Route | Description |
-| --- | --- | --- |
-| POST | `/auth/register` | Create a new user and set auth cookie |
-| POST | `/auth/login` | Log in an existing user and set auth cookie |
-| GET | `/me` | Return the currently authenticated user |
-
-### Request Examples
-
-Register:
+### Register
 
 ```json
 {
@@ -236,64 +297,77 @@ Register:
 }
 ```
 
-Login:
+### Start Interview
 
 ```json
 {
-    "email": "priyanshu@example.com",
-    "password": "password123"
+    "work_field": "Software Engineering",
+    "role": "Frontend Engineer",
+    "difficulty": "Medium"
 }
 ```
 
-## Planned AI Interview Flow
+### Submit Answer
 
-1. User logs in.
-2. User selects a target role.
-3. Backend asks Gemini/OpenAI to generate role-specific interview questions.
-4. User answers each question.
-5. Backend sends the answer to the AI model for evaluation.
-6. AI returns a score, feedback, strengths, and improvement points.
-7. App stores the interview session in PostgreSQL/Supabase.
-8. User reviews the final summary and tracks past performance.
-
-## Suggested Future Database Models
-
-```txt
-users
-roles
-interview_sessions
-questions
-answers
-evaluations
+```json
+{
+    "question": "What is the virtual DOM in React?",
+    "answer": "The virtual DOM is React's in-memory representation of the UI..."
+}
 ```
 
-Example relationships:
+### Submit Interview
 
-- A user has many interview sessions.
-- An interview session belongs to one role.
-- An interview session has many questions.
-- Each question has one user answer.
-- Each answer has one AI evaluation.
+```json
+{
+    "score": 82
+}
+```
 
-## Build Roadmap
+## Supported Interview Fields
 
-1. Finish backend auth and validation
-2. Add database schema for roles, sessions, questions, answers, and evaluations
-3. Connect Gemini/OpenAI for question generation
-4. Add interview session API routes
-5. Build role selection and interview screens
-6. Add AI scoring and feedback UI
-7. Build session summary screen
-8. Add history dashboard
-9. Deploy frontend and backend
+Intervia currently includes role presets for:
+
+- Software Engineering
+- Data and AI
+- Design
+- Product
+- Marketing
+- Sales
+- HR and Recruiting
+- Finance and Accounting
+- Operations
+- Cybersecurity
+- Cloud and Infrastructure
+- Support
+- Education
+- Healthcare
+- Legal
+
+## Deployment Notes
+
+- The frontend includes `client/vercel.json` so client-side routes work correctly on Vercel.
+- The backend must allow the deployed frontend URL through `CLIENT_URL`.
+- In production, cookies use `sameSite: "none"` and `secure: true`, so the backend must be served over HTTPS.
+- Configure production environment variables separately for the client and server.
+
+## Future Improvements
+
+- Add formal database migrations
+- Add stronger password hashing with bcrypt or Argon2
+- Add richer AI session summaries with strengths and weak areas
+- Add charts for progress over time
+- Add automated tests for auth, interview routes, and AI response parsing
+- Add better retry handling for invalid AI JSON responses
 
 ## Portfolio Talking Points
 
-- Built a real AI-powered product around a personal job-search problem
-- Designed full-stack architecture with auth, database, API, and frontend routing
-- Integrated third-party AI APIs for dynamic question generation and feedback
-- Stored user progress so the app becomes more useful over time
-- Created a project that is practical, demo-friendly, and easy to discuss in interviews
+- Built a real AI-powered interview practice app from scratch
+- Combined frontend, backend, auth, database, and AI workflows
+- Used Groq to generate questions and evaluate answers dynamically
+- Designed persistent interview sessions with resume and review flows
+- Added speech input for a more realistic mock interview experience
+- Built a project that is useful during job hunting and easy to demo in interviews
 
 ## License
 

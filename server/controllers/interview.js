@@ -41,11 +41,11 @@ async function handleGetAllInterviews(req, res) {
 
 async function handleStartInterview(req, res) {
     try {
-        const { role, difficulty } = req.body;
+        const { role, difficulty, work_field } = req.body;
 
-        const interview = await createInterview(req.user.id, role, difficulty);
+        const interview = await createInterview(req.user.id, role, difficulty, work_field);
 
-        const questionsList = await generateInterviewQuestions({ role, difficulty });
+        const questionsList = await generateInterviewQuestions({ role, difficulty, work_field });
 
         const savedQuestions = await createInterviewQuestions(interview.id, questionsList.questions);
 
@@ -181,6 +181,36 @@ async function handleResumeInterview(req, res) {
     }
 }
 
+async function handleGetInterviewDetails(req, res) {
+    try {
+        const interviewId = req.params.interviewId;
+
+        const intvw = await findInterview(interviewId);
+
+        if(!intvw) {
+            return res.status(400).json({
+                message: "Interview doesn't exist",
+            });
+        }
+
+        const questions = await getAllInterviewQuestionsByInterviewId(interviewId);
+
+        return res.status(200).json({
+            message: "Interview found",
+            interview: {
+                data: intvw,
+                questions: questions || [],
+            },
+        });
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).json({
+            message: "Error finding interview",
+        });
+    }
+}
+
 module.exports = {
     handleStartInterview,
     handleSubmitAnswer,
@@ -188,4 +218,5 @@ module.exports = {
     handleGetAllInterviews,
     handleAbandonInterview,
     handleResumeInterview,
+    handleGetInterviewDetails,
 }

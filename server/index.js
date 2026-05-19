@@ -6,7 +6,6 @@ const cookieParser = require('cookie-parser');
 
 const authRoute = require("./routes/auth");
 const interviewRoute = require("./routes/interview");
-const questionRoute = require("./routes/question");
 
 const { verifyUser } = require("./middlewares/auth");
 require("./connection")
@@ -43,7 +42,6 @@ app.get('/me', verifyUser, (req, res) => {
 });
 app.use('/auth', authRoute);
 app.use('/interview', verifyUser, interviewRoute);
-app.use('/question', verifyUser, questionRoute);
 
 app.listen(port, () => {
     console.log(`Server is running on PORT: ${port}`);

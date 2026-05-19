@@ -1,13 +1,22 @@
 import { useAuth } from "../context/auth-context";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { difficultyColor, formatDate, formatDuration, memberSince, scoreColor } from "../lib/utils";
-import { logoutUser } from "../lib/apis";
+import { logoutUser, resumeInterview } from "../lib/apis";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { setInterviewInfo, setQuestions } from "../features/interviewSlice";
+import { updateInterviewInfo } from "../features/appSlice";
+import LoadingModal from "../components/loading-modal";
 
 function Profile() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { user, setUser, setIsAuthenticated } = useAuth();
     const { interviews } = useSelector((state) => state.app.interviews);
 
     const lastInterview = interviews?.[0] ?? null;
+
+    const [loading, setLoading] = useState(false);
 
     const completedInterviews =
         interviews.filter(i => i.score != null);
@@ -20,6 +29,26 @@ function Profile() {
             ) / completedInterviews.length
         ) + " / 100"
         : "0 / 100";
+    
+    async function handleResumeInterview(interviewId) {
+        try {
+            setLoading(true);
+            const response = await resumeInterview(interviewId);
+
+            if(response.status === 200) {
+                dispatch(setInterviewInfo(response.data.interview));
+                dispatch(updateInterviewInfo(response.data.interview));
+                dispatch(setQuestions(response.data.questions));
+                navigate('/interview');
+            }
+        }
+        catch(err) {
+            console.log(err);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
 
     async function handleLogout() {
         try {
@@ -129,7 +158,7 @@ function Profile() {
 
                             <div className="flex-1 min-w-0">
                                 <div className="flex flex-wrap items-center gap-2 mb-1">
-                                    <p className="text-[14px] font-medium text-white break-words">
+                                    <p className="text-[14px] font-medium text-white wrap-break-word">
                                         {lastInterview.role}
                                     </p>
 
@@ -156,13 +185,13 @@ function Profile() {
 
                         {(lastInterview.status === "abandoned" ||
                             lastInterview.status === "active") ? (
-                            <button className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                            <button onClick={() => handleResumeInterview(lastInterview.id)} className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                 Resume →
                             </button>
                         ) : (
-                            <button className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                            <Link to={`/review/${lastInterview.id}`} className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                 Review →
-                            </button>
+                            </Link>
                         )}
                     </div>
                 )}
@@ -182,6 +211,7 @@ function Profile() {
                 </button>
             </div>
 
+            {loading && <LoadingModal message="Please wait. We are loading your interview..." />}
         </div>
     );
 }

@@ -48,7 +48,7 @@ async function submitAnswer(callBody, id) {
 }
 
 async function submitInterview(callBody, id) {
-    const response = await axios.putt(
+    const response = await axios.put(
         `${import.meta.env.VITE_API_URL}interview/submit/${id}`,
         callBody,
         {

@@ -5,18 +5,21 @@ const {
     handleSubmitInterview, 
     handleGetAllInterviews, 
     handleAbandonInterview, 
-    handleResumeInterview
+    handleResumeInterview,
+    handleGetInterviewDetails
 } = require('../controllers/interview');
 
 const router = Router();
 
+router.get('/all', handleGetAllInterviews);
+
 router.post('/start', handleStartInterview);
+
+router.get('/:interviewId', handleGetInterviewDetails);
 
 router.put('/answer/:questionId', handleSubmitAnswer);
 
-router.put('/submit/', handleSubmitInterview);
-
-router.get('/all', handleGetAllInterviews);
+router.put('/submit/:interviewId', handleSubmitInterview);
 
 router.put('/abandon/:interviewId', handleAbandonInterview);
 

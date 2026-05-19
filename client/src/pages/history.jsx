@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { difficultyColor, formatDate, formatDuration, scoreColor } from "../lib/utils";
 import { resumeInterview } from "../lib/apis";
 import { updateInterviewInfo } from "../features/appSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setInterviewInfo, setQuestions } from "../features/interviewSlice";
 import LoadingModal from '../components/loading-modal';
 import { useState } from "react";
@@ -92,7 +92,7 @@ function History() {
 
                                 <div className="flex-1 min-w-0">
                                     <div className="flex flex-wrap items-center gap-2 mb-1">
-                                        <p className="text-[14px] font-medium text-white break-words">
+                                        <p className="text-[14px] font-medium text-white wrap-break-word">
                                             {interview.role}
                                         </p>
 
@@ -135,9 +135,9 @@ function History() {
                                     Resume →
                                 </button>
                             ) : (
-                                <button className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
+                                <Link to={`/review/${interview.id}`} className="cursor-pointer self-start sm:self-center shrink-0 text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                     Review →
-                                </button>
+                                </Link>
                             )}
                         </div>
                     ))}

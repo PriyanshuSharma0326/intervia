@@ -4,11 +4,11 @@ const groq = new Groq({
     apiKey: process.env.GROQ_API_KEY,
 });
 
-async function generateInterviewQuestions({ role, difficulty }) {
+async function generateInterviewQuestions({ role, difficulty, work_field }) {
     try {
         const prompt = `
             Generate 10 unique ${difficulty} level interview questions
-            for a ${role} developer.
+            for a ${role} in the field of ${work_field}.
 
             Return ONLY valid JSON.
 

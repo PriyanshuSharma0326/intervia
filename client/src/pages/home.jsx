@@ -30,7 +30,8 @@ function Home() {
             const response = await startInterview(
                 {
                     role: role,
-                    difficulty: difficulty
+                    difficulty: difficulty,
+                    work_field: field,
                 }
             );
 
@@ -236,9 +237,9 @@ function Home() {
                                         <button onClick={() => handleResumeInterview(s.id)} className="cursor-pointer text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150">
                                             Resume →
                                         </button> :
-                                        <button className="text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150 cursor-pointer">
+                                        <Link to={`/review/${s.id}`} className="text-[12px] text-brandAccent hover:opacity-75 transition-opacity duration-150 cursor-pointer">
                                             Review →
-                                        </button>
+                                        </Link>
                                     }
                                 </div>
                             </div>

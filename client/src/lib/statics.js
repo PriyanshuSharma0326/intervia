@@ -1,4 +1,4 @@
-import { BankIcon, HistoryIcon, HomeIcon, ProfileIcon } from "./icons";
+import { HistoryIcon, HomeIcon, ProfileIcon } from "./icons";
 
 const ROLES = {
     "Software Engineering": [
@@ -120,7 +120,6 @@ const DIFFICULTIES = ["Easy", "Medium", "Hard"];
 
 const NAV_LINKS = [
     { to: "/", label: "Home", icon: HomeIcon },
-    { to: "/question-banks", label: "Question Banks", icon: BankIcon },
     { to: "/history", label: "History", icon: HistoryIcon },
     { to: "/profile", label: "Profile", icon: ProfileIcon },
 ];
