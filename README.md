@@ -4,6 +4,8 @@ Intervia is a full-stack AI mock interview platform for practicing role-based in
 
 The app is built as a practical job-prep tool and a portfolio project that demonstrates authentication, frontend state management, backend APIs, PostgreSQL persistence, and AI integration in one product.
 
+![App screenshot](./client/public/site-screenshot.png)
+
 ## Features
 
 - User signup, login, logout, and protected routes
