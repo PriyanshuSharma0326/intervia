@@ -136,6 +136,7 @@ function Interview() {
         if(currentQuestion.evaluation_score) return;
 
         try {
+            setLoading(true);
             const response = await submitAnswer({
                 question: currentQuestion.question,
                 answer: answer,
@@ -148,10 +149,14 @@ function Interview() {
         catch(err) {
             console.log(err);
         }
+        finally {
+            setLoading(false);
+        }
     };
 
     async function handleSubmitInterview() {
         try {
+            setLoading(true);
             const totalScore = questions.reduce(
                 (total, question) => {
                     return total + (question.evaluation_score || 0);
@@ -168,6 +173,9 @@ function Interview() {
         }
         catch(err) {
             console.log(err);
+        }
+        finally {
+            setLoading(false);
         }
     }
 

@@ -55,8 +55,7 @@ async function generateEvaluationForAnswer({
     try {
         const prompt = `
             You are a technical interviewer.
-
-            Evaluate the candidate's answer.
+            Evaluate the candidate's answer based on the question.
 
             Interview Question:
             ${question}
@@ -68,12 +67,12 @@ async function generateEvaluationForAnswer({
 
             {
                 "feedback": "short feedback here",
-                "score": 7
+                "score": anywhere from 0-10 based on the answer
             }
 
             Rules:
             - feedback must be maximum 1 sentence
-            - score must be integer between 1 and 10
+            - score must be integer between 0 and 10
             - no markdown
             - no explanation
         `;
