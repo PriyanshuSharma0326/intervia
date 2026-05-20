@@ -17,7 +17,7 @@ function PasswordResetSuccess() {
                     Password reset
                 </h1>
 
-                <p className="text-[13px] text-white/40 font-light leading-relaxed mb-8">
+                <p className="text-[13px] text-white/60 font-light leading-relaxed mb-8">
                     Your password has been reset successfully. You can now sign in with your new password.
                 </p>
 

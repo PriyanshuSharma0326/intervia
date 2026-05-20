@@ -6,12 +6,8 @@ import { isValidEmail } from "../../lib/utils";
 import { useAuth } from "../../context/auth-context";
 import LoadingModal from "../../components/loading-modal";
 import AppLogo from '../../assets/AppLogo.svg';
-import { useDispatch } from "react-redux";
-import { fetchInterviews } from "../../features/appSlice";
 
 function Login() {
-    const dispatch = useDispatch();
-
     const [showPass, setShowPass] = useState(false);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -74,8 +70,6 @@ function Login() {
                 err.response?.data?.message ||
                 "Login failed"
             );
-
-            console.log(err);
         }
         finally {
             setLoading(false);
@@ -95,8 +89,8 @@ function Login() {
                     />
 
                     <div
-                        className="absolute w-[320px] h-80 rounded-full pointer-events-none -bottom-15 -right-20"
-                        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 68%)" }}
+                        className="absolute w-[320px] h-80 rounded-full pointer-events-none -top-15 -left-20"
+                        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 68%)" }}
                     />
 
                     <div className="relative z-10 h-15">

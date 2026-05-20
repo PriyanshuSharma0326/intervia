@@ -5,11 +5,14 @@ import AppLogo from '../../assets/AppLogo.svg';
 import { checkEmailExists, resetPassword } from "../../lib/apis";
 import { isValidEmail } from "../../lib/utils";
 import PasswordResetSuccess from "../../components/password-reset-success";
+import LoadingModal from "../../components/loading-modal";
 
 function ForgotPassword() {
     const defaultFormData = { email: "", password: "", confirmPassword: "" }
-    const [form, setForm] = useState(defaultFormData);
 
+    const [form, setForm] = useState(defaultFormData);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     const [emailError, setEmailError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -34,15 +37,25 @@ function ForgotPassword() {
         }
 
         try {
+            setLoading(true);
             setEmailError("");
             const response = await checkEmailExists({ email: form.email });
 
             if(response.status === 200) {
                 setEmailVerified(true);
+                if(error) {
+                    setError("");
+                }
             }
         }
         catch(err) {
-            console.log(err);
+            setError(
+                err.response?.data?.message ||
+                "Email verification failed"
+            );
+        }
+        finally {
+            setLoading(false);
         }
     };
 
@@ -61,6 +74,7 @@ function ForgotPassword() {
         }
 
         try {
+            setLoading(true);
             setEmailError("");
             setConfirmPasswordError("");
             const response = await resetPassword(form);
@@ -71,7 +85,13 @@ function ForgotPassword() {
             }
         }
         catch(err) {
-            console.log(err);
+            setError(
+                err.response?.data?.message ||
+                "Failed to reset password"
+            );
+        }
+        finally {
+            setLoading(false);
         }
     }
 
@@ -101,8 +121,8 @@ function ForgotPassword() {
                     />
 
                     <div
-                        className="absolute w-[320px] h-80 rounded-full pointer-events-none -bottom-15 -right-20"
-                        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 68%)" }}
+                        className="absolute w-[320px] h-80 rounded-full pointer-events-none -top-15 -left-20"
+                        style={{ background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 68%)" }}
                     />
 
                     <div className="relative z-10 h-15">
@@ -115,7 +135,7 @@ function ForgotPassword() {
                         </h1>
 
                         <p className="text-[13px] text-white/40 font-light leading-relaxed">
-                            No worries. Enter your email and we'll send you a link to reset it.
+                            No worries. We will help you to reset it.
                         </p>
                     </div>
 
@@ -128,8 +148,14 @@ function ForgotPassword() {
                     <p className="font-display text-[26px] font-medium text-textPrimary mb-1">Reset password</p>
 
                     <p className="text-[13px] text-textSecondary font-light mb-8">
-                        We'll send a reset link to your inbox.
+                        {emailVerified ? 'Enter your new password.' : 'Please verify your email address'}
                     </p>
+
+                    {error && (
+                        <div className="bg-errorBg border border-errorBorder text-errorText text-[13px] px-3.5 py-2.5 rounded-lg mb-4">
+                            {error}
+                        </div>
+                    )}
 
                     <Input
                         label="Email"
@@ -199,14 +225,8 @@ function ForgotPassword() {
             </div>
 
             <div className="relative z-10 lg:hidden w-full max-w-100 px-6 py-12">
-                <div className="mb-8">
-                    <div className="font-display text-2xl font-semibold text-white tracking-[-0.4px] mb-1">
-                        Inter<span className="text-brandAccent">via</span>
-                    </div>
-
-                    <div className="text-[11px] text-white/40 tracking-[1.2px] uppercase font-light">
-                        AI Interview Coach
-                    </div>
+                <div className="mb-8 h-15">
+                    <img className="h-full" src={AppLogo} alt="" />
                 </div>
 
                 <p className="font-display text-[26px] font-medium text-white mb-1">Reset password</p>
@@ -214,6 +234,12 @@ function ForgotPassword() {
                 <p className="text-[13px] text-white/40 font-light mb-8">
                     We'll send a reset link to your inbox.
                 </p>
+
+                {error && (
+                    <div className="bg-errorBg border border-errorBorder text-errorText text-[13px] px-3.5 py-2.5 rounded-lg mb-4">
+                        {error}
+                    </div>
+                )}
 
                 <Input
                     label="Email"
@@ -282,6 +308,8 @@ function ForgotPassword() {
             </div>
 
             {resetDone && <PasswordResetSuccess />}
+
+            {loading && <LoadingModal message="Please wait..." />}
         </div>
     );
 }

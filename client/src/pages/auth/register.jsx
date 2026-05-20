@@ -87,8 +87,6 @@ function Register() {
                 err.response?.data?.message ||
                 "Login failed"
             );
-
-            console.log(err);
         }
         finally {
             setLoading(false);

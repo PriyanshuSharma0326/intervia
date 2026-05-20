@@ -24,6 +24,8 @@ function Interview() {
     const recognitionRef = useRef(null);
     const [loading, setLoading] = useState(false);
 
+    const [evaluationLoading, setEvaluationLoading] = useState(false);
+
     const currentQuestion = questions?.[currentIndex];
     const totalQuestions = questions?.length ?? 0;
 
@@ -38,12 +40,12 @@ function Interview() {
 
             recognition.onresult = (event) => {
                 let transcript = "";
-                for (let i = 0; i < event.results.length; i++) {
+                for (let i = event.resultIndex; i < event.results.length; i++) {
                     if (event.results[i].isFinal) {
                         transcript += event.results[i][0].transcript + " ";
                     }
                 }
-                setAnswer(transcript.trim());
+                setAnswer((prev) => (prev + " " + transcript).trim());
             };
 
             recognition.onend = () => {
@@ -136,7 +138,7 @@ function Interview() {
         if(currentQuestion.evaluation_score) return;
 
         try {
-            setLoading(true);
+            setEvaluationLoading(true);
             const response = await submitAnswer({
                 question: currentQuestion.question,
                 answer: answer,
@@ -150,7 +152,7 @@ function Interview() {
             console.log(err);
         }
         finally {
-            setLoading(false);
+            setEvaluationLoading(false);
         }
     };
 
@@ -284,7 +286,7 @@ function Interview() {
                                             : "bg-white hover:bg-white/90 text-darkPanel cursor-pointer"
                                         }`}
                                 >
-                                    {currentQuestion.evaluation_score ? "✓ Submitted" : "Submit Answer"}
+                                    {currentQuestion.evaluation_score ? "✓ Submitted" : (evaluationLoading ? 'Submitting...' : "Submit Answer")}
                                 </button>
 
                                 {currentIndex === totalQuestions - 1 ? (
@@ -292,7 +294,7 @@ function Interview() {
                                         onClick={handleSubmitInterview}
                                         className="flex-1 sm:flex-none text-[13px] px-4 py-2 rounded-lg bg-brandPrimary hover:bg-brandHover text-white font-medium transition-all duration-150 cursor-pointer"
                                     >
-                                        {questions.length < 10 ? "Submit Answer" : "Finish"} →
+                                        Finish →
                                     </button>
                                 ) : (
                                     <button
