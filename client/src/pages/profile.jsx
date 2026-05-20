@@ -211,7 +211,7 @@ function Profile() {
                 </button>
             </div>
 
-            {loading && <LoadingModal message="Please wait. We are loading your interview..." />}
+            {loading && <LoadingModal message="Generating interview for you..." />}
         </div>
     );
 }

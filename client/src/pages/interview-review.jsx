@@ -196,7 +196,7 @@ function InterviewReview() {
                 </div>
             )}
 
-            {loading === 'loading' && <LoadingModal message="Please wait..." />}
+            {loading === 'loading' && <LoadingModal message="Generating interview details..." />}
         </div>
     );
 }

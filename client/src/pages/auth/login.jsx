@@ -239,7 +239,7 @@ function Login() {
                 </p>
             </div>
 
-            {loading && <LoadingModal message="Signing in..." />}
+            {loading && <LoadingModal message="Please wait..." />}
         </>
     );
 }

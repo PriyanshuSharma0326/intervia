@@ -276,7 +276,7 @@ function Register() {
                 </p>
             </div>
 
-            {loading && <LoadingModal message="Creating your account..." />}
+            {loading && <LoadingModal message="Creating your profile..." />}
         </>
     );
 }

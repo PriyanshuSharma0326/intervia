@@ -1,4 +1,4 @@
-function LoadingModal({ message = "Generating suggestions..." }) {
+function LoadingModal({ message = "Generating interviews..." }) {
     return (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 backdrop-blur-sm bg-darkPanel/80">
             <div className="relative w-[90px] h-[90px]" role="status" aria-label="Loading">

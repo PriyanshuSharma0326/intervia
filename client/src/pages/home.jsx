@@ -248,7 +248,7 @@ function Home() {
                 )}
             </div>
 
-            {loading && <LoadingModal message="Please wait while we load your interview..." />}
+            {loading && <LoadingModal message="Generating interview for you..." />}
         </div>
     );
 }

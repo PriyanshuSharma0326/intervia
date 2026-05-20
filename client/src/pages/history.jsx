@@ -144,7 +144,7 @@ function History() {
                 </div>
             )}
 
-            {loading && <LoadingModal message="Please wait. We are loading your interview..." />}
+            {loading && <LoadingModal message="Generating interview..." />}
         </div>
     );
 }
